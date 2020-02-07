@@ -3,7 +3,7 @@ class MainMenu extends Phaser.Scene {
         super({key:"MainMenu"});
     }
     preload(){
-        this.load.audio('MainMenu',['assets/songs/MainMenu.wav']);
+        this.load.audio('MainMenu',['assets/audio/MainMenu.wav']);
     }
 
     create () {

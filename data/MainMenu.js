@@ -20,10 +20,10 @@ class MainMenu extends Phaser.Scene {
             targets: this.text,
             x:650,
             y:300,
-            duration:2000,
+            duration:4950,
             ease:"Elastic",
             easeParams:[1.5,0.5],
-            delay:1000,
+            delay:9,
             onComplete:function(src,tgt) {
                 tgt [0] .setColor("Gold");
             }
@@ -32,10 +32,10 @@ class MainMenu extends Phaser.Scene {
             targets: this.text2,
             x:650,
             y:350,
-            duration:2000,
+            duration:4900,
             ease:"Elastic",
             easeParams:[1.5,0.5],
-            delay:1000,
+            delay:10,
             onComplete:function(src,tgt) {
                 tgt [0] .setColor("Gold");
             }
@@ -44,10 +44,10 @@ class MainMenu extends Phaser.Scene {
             targets: this.Main,
             x:550,
             y:200,
-            duration:2000,
+            duration:5000,
             ease:"Elastic",
             easeParams:[1.5,0.5],
-            delay:1250,
+            delay:8,
             onComplete:function(src,tgt) {
                 tgt [0] .setColor("Gold");
             }

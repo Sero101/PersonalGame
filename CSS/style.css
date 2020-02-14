@@ -1,0 +1,10 @@
+html, body {
+    height: 100%;
+}
+body {
+    margin: auto;
+    padding: 0;
+    background: #111;
+    color: #eee;
+    font: caption;
+}

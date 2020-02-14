@@ -18,7 +18,7 @@ if (isMobile != -1) {
 }
 var config = {
     type: Phaser.AUTO,
-    width: 1920,
+    width: 1337,
     height: 1080,
     parent: 'phaser.game',
     physics: {
@@ -29,7 +29,7 @@ var config = {
         },
         scale: {
             mode:Phaser.Scale.FIT,
-            autoCenter: Phaser.Scale.CENTER_VERTICALLY
+            autoCenter: Phaser.Scale.CENTER_BOTH
         }
     },
     scene: [MainMenu,Stage1]

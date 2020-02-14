@@ -18,7 +18,8 @@ class Stage1 extends Phaser.Scene {
         this.load.image('bomb','assets/Icons/bomb.png'),
         this.load.image('demon','assets/Icons/demon1.png'),
         this.load.audio('summonsound','assets/Audio/Satan.wav'),
-        this.load.image('sky','assets/Icons/sky.png'),this);
+        this.load.image('sky','assets/Icons/sky.png'),
+        this.load.image('movingplatform', 'assets/Icons/platform.png'),this);
     }
      create (){
         let bg = this.add.image(0,0,'sky').setOrigin(0,0);
@@ -34,8 +35,27 @@ class Stage1 extends Phaser.Scene {
         //
         //
         //
+        var movingplatform = this.physics.add.image(400,250, 'movingplatform')
+            movingplatform.setImmovable(true)
+            movingplatform.setVelocity(100,-100);
+            movingplatform.body.setAllowGravity(false);
+        this.tweens.timeline({
+            targets: movingplatform.body.velocity,
+            loop: -1,
+            tweens: [
+                { x:    0, y: 0, duration: 2000, ease: 'Stepped' },
+                { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+                { x:  200, y:  0, duration: 4000, ease: 'Stepped' },
+                { x:    0, y: 0, duration: 2000, ease: 'Stepped' },
+                { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+                { x: -200, y:  0, duration: 4000, ease: 'Stepped' }
+              ]
+            });
+        //
+        //
+        //
         this.player = this.physics.add.sprite(0,600, 'PLAYER');
-        Align.scaleToGameW(this.player,.02);
+        Align.scaleToGameW(this.player,.03);
         this.image2 = this.add.image('demon');
         this.demonsummoning = this.sound.add('summonsound');
         this.fireballeffect = this.sound.add("fireball");
@@ -46,10 +66,14 @@ class Stage1 extends Phaser.Scene {
         this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         //
         //
+        //  
+        //
+        //
         //
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
-        this.physics.add.collider(this.player, platforms);
+        this.physics.add.collider(this.player, platforms)
+        this.physics.add.collider(this.player, movingplatform);
         //
         //
         //
@@ -59,6 +83,11 @@ class Stage1 extends Phaser.Scene {
         //
         //
         //
+        function collide (movingplatform,player) {
+            if (movingplatform.body.moves && movingplatform.body.touching.up && player.body.touching.down) {
+                    player.setGravityY(10000);
+            }
+        }
         this.blockGrid = new AlignGrid({
             scene: this,
             rows: 11,

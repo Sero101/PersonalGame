@@ -1,7 +1,26 @@
+
+
+
+
+var game;
+window.onload = function() {
+    var isMobile = navigator.userAgent.indexOf("Mobile");
+    if (isMobile == -1) {
+        isMobile = navigator.userAgent.indexOf("Tablet");
+    }
+
+var w = 480
+var h = 640
+if (isMobile != -1) {
+    w = window.innerWidth;
+  h = window.innerHeight;
+}
+}
 var config = {
     type: Phaser.AUTO,
-    width: 1800,
-    height: 800,
+    width: 1920,
+    height: 1080,
+    parent: 'phaser.game',
     physics: {
         default:'arcade',
         arcade: {
@@ -19,4 +38,4 @@ var config = {
     
 };
 
-var game = new Phaser.Game(config);
+    game = new Phaser.Game(config);

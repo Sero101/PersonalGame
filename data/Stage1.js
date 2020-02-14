@@ -1,5 +1,4 @@
 var platforms;
-var player;
 class Stage1 extends Phaser.Scene {
     constructor() {
         super({key:"Stage1"});
@@ -9,27 +8,34 @@ class Stage1 extends Phaser.Scene {
             frameWidth: 32, frameHeight: 48
         }) 
         this.load.image ('background', 'assets/Icons/background.png'), 
-        this.load.audio('test',['assets/audio/song1.wav','assets/audio/song2.wav','assets/audio/song3.wav','assets/audio/song4']),
-        this.load.audio('tutoroll',['assets/audio/lol.mp3']),
+        this.load.audio('test',['assets/Audio/song1.wav','assets/audio/song2.wav','assets/audio/song3.wav','assets/audio/song4']),
+        this.load.audio('tutoroll',['assets/Audio/lol.mp3']),
         this.load.image('projectile', 'assets/Icons/projectile.png'),
         this.load.image('projectile2', 'assets/icons/projectile2.png'),
-        this.load.audio('fireball', 'assets/audio/fireballsound.wav'),
-        this.load.audio('MainMenu',['assets/audio/MainMenu.wav'],
+        this.load.audio('fireball', 'assets/Audio/fireballsound.wav'),
+        this.load.audio('MainMenu',['assets/Audio/MainMenu.wav'],
         this.load.image('platform','assets/Icons/platform.png'),
         this.load.image('bomb','assets/Icons/bomb.png'),
         this.load.image('demon','assets/Icons/demon1.png'),
-        this.load.audio('summonsound','assets/audio/Satan.wav'),
+        this.load.audio('summonsound','assets/Audio/Satan.wav'),
         this.load.image('sky','assets/Icons/sky.png'),this);
     }
      create (){
-        this.add.image(900,400,'sky')
+        let bg = this.add.image(0,0,'sky').setOrigin(0,0);
+        Align.scaleToGameW(bg, 2);
+        //
+        //
+        //
         platforms = this.physics.add.staticGroup();
-        platforms.create(400, 568, 'platform').setScale(2).refreshBody();
-        platforms.create(600,400,'platform');
-        platforms.create(50,250,'platform');
-        platforms.create(750,220,'platform');
-        player = this.physics.add.sprite(100,400, 'PLAYER');
-        this.sprite = player
+        platforms.create(400, 908, 'platform').setScale(10).refreshBody();
+        platforms.create(550,575,'platform');
+        platforms.create(50,420,'platform');
+        platforms.create(750,380,'platform');
+        //
+        //
+        //
+        this.player = this.physics.add.sprite(0,600, 'PLAYER');
+        Align.scaleToGameW(this.player,.02);
         this.image2 = this.add.image('demon');
         this.demonsummoning = this.sound.add('summonsound');
         this.fireballeffect = this.sound.add("fireball");
@@ -38,9 +44,32 @@ class Stage1 extends Phaser.Scene {
         this.key_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.key_D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        player.setBounce(0.2);
-        player.setCollideWorldBounds(true);
-        this.physics.add.collider(player, platforms);
+        //
+        //
+        //
+        this.player.setBounce(0.2);
+        this.player.setCollideWorldBounds(true);
+        this.physics.add.collider(this.player, platforms);
+        //
+        //
+        //
+        //window.scene = this;
+        this.cameras.main.setBounds(0,0,bg.displayWidth,bg.displayHeight);
+        this.cameras.main.startFollow(this.player)
+        //
+        //
+        //
+        this.blockGrid = new AlignGrid({
+            scene: this,
+            rows: 11,
+            cols: 11,
+            height: bg.displayHeight,
+            width: bg.displayWidth
+        })
+        //this.blockGrid.showNumbers();
+        //
+        //
+        //
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('PLAYER', { start: 0, end: 3 }),
@@ -60,39 +89,26 @@ class Stage1 extends Phaser.Scene {
         frameRate: 10,
         repeat: -1
     },this);
-    
-        this.input.on('pointerdown',    function(event){
-            if (event = 1) {
-            event = 1;
-            this.text = this.add.text(0,0, "Welcome Sir To The Testing Range!", { font:"30px Impact"});
-            }
-            else if (event = 1) {
-               this.input.on('pointerup', function(event){
-                 this.text = this.remove.text()  
-               })
-               
-            }
-        
+        //
+        //
+        //
             this.input.keyboard.on('keyup_P', function(event) {
                 if (this.key_A.isDown) {
-                    var physicsImage = this.physics.add.image(this.sprite.x, this.sprite.y, "projectile");
+                    var physicsImage = this.physics.add.image(this.player.x, this.player.y, "projectile");
                     physicsImage.setVelocity(Phaser.Math.RND.integerInRange (-200,200) -600, -100);
-                    physicsImage.x = this.sprite.x + -100
+                    physicsImage.x = this.player.x + -100
                     this.fireballeffect.play();
                 }
                 else if (this.key_D.isDown) {
-                    var physicsImage2 = this.physics.add.image(this.sprite.x, this.sprite.y, "projectile2"); 
+                    var physicsImage2 = this.physics.add.image(this.player.x, this.player.y, "projectile2"); 
                     physicsImage2.setVelocity(Phaser.Math.RND.integerInRange (200,-200) + 600, -100 );
-                    physicsImage2.x = this.sprite.x + 100;
+                    physicsImage2.x = this.player.x + 100;
                     this.fireballeffect.play();
                 }
+                if (physicsImage2,physicsImage = true) {
+                    destroy();
+                }
                 },this);
-        
-     
-        if (this.key_D.isDown) {
-            player.setVelocityX (Phaser.Math.RND.integerInRange(160,160) + 600, -100)
-        }
-        
         this.input.keyboard.on('keyup', function (e) {
             if (e.key == "r") {
                 this.MainMenu = this.sound.add("MainMenu", {loop: "MainMenu"})
@@ -109,32 +125,34 @@ class Stage1 extends Phaser.Scene {
         this.soundFX.play();
             }
         },this);
-        }
-     ,this)}
+    }
+     //
+     //
+     //
      update () 
      {
         if (this.key_A.isDown)
     {
-        player.setVelocityX(-160);
+        this.player.setVelocityX(-160);
     
-        player.anims.play('left', true);
+        this.player.anims.play('left', true);
     }
     else if (this.key_D.isDown)
     {
-        player.setVelocityX(160);
+        this.player.setVelocityX(160);
     
-        player.anims.play('right', true);
+        this.player.anims.play('right', true);
     }
     else
     {
-        player.setVelocityX(0);
+        this.player.setVelocityX(0);
     
-        player.anims.play('turn');
+        this.player.anims.play('turn');
     }
     
-    if (this.key_W.isDown && player.body.touching.down)
+    if (this.key_W.isDown && this.player.body.touching.down)
     {
-        player.setVelocityY(-350);
+        this.player.setVelocityY(-350);
     }
     }
 }

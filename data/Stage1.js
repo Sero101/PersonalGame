@@ -105,9 +105,6 @@ class Stage1 extends Phaser.Scene {
                     physicsImage2.x = this.player.x + 100;
                     this.fireballeffect.play();
                 }
-                if (physicsImage2,physicsImage = true) {
-                    destroy();
-                }
                 },this);
         this.input.keyboard.on('keyup', function (e) {
             if (e.key == "r") {

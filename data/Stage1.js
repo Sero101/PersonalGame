@@ -1,4 +1,7 @@
+
+var score = 0;
 var platforms;
+var mana = 50;
 class Stage1 extends Phaser.Scene {
     constructor() {
         super({key:"Stage1"});
@@ -19,6 +22,7 @@ class Stage1 extends Phaser.Scene {
         this.load.image('demon','assets/Icons/demon1.png'),
         this.load.audio('summonsound','assets/Audio/Satan.wav'),
         this.load.image('sky','assets/Icons/sky.png'),
+        this.load.image('star','assets/Icons/star.png'),
         this.load.image('movingplatform', 'assets/Icons/platform.png'),this);
     }
      create (){
@@ -32,6 +36,10 @@ class Stage1 extends Phaser.Scene {
         platforms.create(550,575,'platform');
         platforms.create(50,420,'platform');
         platforms.create(750,380,'platform');
+        platforms.createMultiple(775,400, 'platform');
+        //
+        //
+        //
         //
         //
         //
@@ -66,7 +74,7 @@ class Stage1 extends Phaser.Scene {
         this.key_A = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         //
         //
-        //  
+        //   
         //
         //
         //
@@ -80,6 +88,31 @@ class Stage1 extends Phaser.Scene {
         //window.scene = this;
         this.cameras.main.setBounds(0,0,bg.displayWidth,bg.displayHeight);
         this.cameras.main.startFollow(this.player)
+        //
+        //
+        //
+        var stars = this.physics.add.group({
+            key: 'star',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 }
+        });
+        
+        stars.children.iterate(function (child) {
+        
+            child.setBounceY(Phaser.Math.FloatBetween(0.2, 0.8));
+        
+        });
+        this.physics.add.collider(stars, platforms);
+        this.physics.add.collider(stars, movingplatform);
+        this.physics.add.overlap(this.player, stars, collectStar, null, this);
+        function collectStar (player, star)
+{
+    star.disableBody(true, true);
+    score += 10;
+    if (score == 120) {
+        this.scene.start("Stage2")
+    }
+};
         //
         //
         //
@@ -125,13 +158,16 @@ class Stage1 extends Phaser.Scene {
                 if (this.key_A.isDown) {
                     var physicsImage = this.physics.add.image(this.player.x, this.player.y, "projectile");
                     physicsImage.setVelocity(Phaser.Math.RND.integerInRange (-200,200) -600, -100);
-                    physicsImage.x = this.player.x + -100
-                    this.fireballeffect.play();
+                    physicsImage.x = this.player.x + -100;
+                    this.player.setTint(0xff0000);
+                    this.fireballeffect.play(); 
                 }
                 else if (this.key_D.isDown) {
                     var physicsImage2 = this.physics.add.image(this.player.x, this.player.y, "projectile2"); 
                     physicsImage2.setVelocity(Phaser.Math.RND.integerInRange (200,-200) + 600, -100 );
                     physicsImage2.x = this.player.x + 100;
+
+                    this.player.setTint(0xff0000)
                     this.fireballeffect.play();
                 }
                 },this);

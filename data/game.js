@@ -18,8 +18,8 @@ if (isMobile != -1) {
 }
 var config = {
     type: Phaser.AUTO,
-    width: 1337,
-    height: 1080,
+    width: 2048,
+    height: 1024,
     parent: 'phaser.game',
     physics: {
         default:'arcade',
@@ -32,7 +32,7 @@ var config = {
             autoCenter: Phaser.Scale.CENTER_BOTH
         }
     },
-    scene: [MainMenu,Stage1]
+        scene: [MainMenu,Stage1,Stage2]
     
 
     

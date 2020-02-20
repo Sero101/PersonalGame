@@ -7,8 +7,8 @@ class Stage1 extends Phaser.Scene {
         super({key:"Stage1"});
     }
      preload(){
-        this.load.spritesheet('PLAYER', 'assets/Icons/dude.png',{
-            frameWidth: 32, frameHeight: 48
+        this.load.spritesheet('PLAYER', 'assets/Icons/player1.png',{
+            frameWidth: 84, frameHeight: 84
         }) 
         this.load.image ('background', 'assets/Icons/background.png'), 
         this.load.audio('test',['assets/Audio/song1.wav','assets/audio/song2.wav','assets/audio/song3.wav','assets/audio/song4']),
@@ -134,20 +134,20 @@ class Stage1 extends Phaser.Scene {
         //
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('PLAYER', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('PLAYER', { start: 20, end: 25 }),
         frameRate: 10,
         repeat: -1
     });
     
     this.anims.create({
         key: 'turn',
-        frames: [ { key: 'PLAYER', frame: 4 } ],
+        frames: this.anims.generateFrameNumbers('PLAYER', { start: 0, end: 3}),
         frameRate: 20
     });
     
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('PLAYER', { start: 5, end: 8 }),
+        frames: this.anims.generateFrameNumbers('PLAYER', { start: 14, end: 19 }),
         frameRate: 10,
         repeat: -1
     },this);
@@ -156,14 +156,14 @@ class Stage1 extends Phaser.Scene {
         //
             this.input.keyboard.on('keyup_P', function(event) {
                 if (this.key_A.isDown) {
-                    var physicsImage = this.physics.add.image(this.player.x, this.player.y, "projectile");
+                    var physicsImage = this.physics.add.image(this.player.x, this.player.y, "projectile").setScale(0.75);
                     physicsImage.setVelocity(Phaser.Math.RND.integerInRange (-200,200) -600, -100);
                     physicsImage.x = this.player.x + -100;
                     this.player.setTint(0xff0000);
                     this.fireballeffect.play(); 
                 }
                 else if (this.key_D.isDown) {
-                    var physicsImage2 = this.physics.add.image(this.player.x, this.player.y, "projectile2"); 
+                    var physicsImage2 = this.physics.add.image(this.player.x, this.player.y, "projectile2").setScale(0.75); 
                     physicsImage2.setVelocity(Phaser.Math.RND.integerInRange (200,-200) + 600, -100 );
                     physicsImage2.x = this.player.x + 100;
 

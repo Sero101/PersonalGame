@@ -9,8 +9,9 @@ class MainMenu extends Phaser.Scene {
     create () {
         this.Main = this.add.text(250,-250, "Manboy And The Last Code", {font:"60px Impact"});
         this.text = this.add.text(250,-50, "Press Anywhere To Start Game", {font:"35px Impact"});
-        this.text2 = this.add.text(225,-50, "Press H For Main Menu Music", {font:"35px Impact"});
+        this.text2 = this.add.text(225,-50, "Press H For Main Menu Music 'If On Chrome'", {font:"35px Impact"});
         this.soundFXMain = this.sound.add("MainMenu", {loop: "MainMenu"});
+        this.soundFXMain.play();
         this.input.keyboard.on('keyup', function (e) {
             if (e.key == "h") {
                 this.soundFXMain.play();

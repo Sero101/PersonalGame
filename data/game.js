@@ -18,8 +18,8 @@ if (isMobile != -1) {
 }
 var config = {
     type: Phaser.AUTO,
-    width: 2048,
-    height: 1024,
+    width: 1919,
+    height: 960,
     parent: 'phaser.game',
     physics: {
         default:'arcade',

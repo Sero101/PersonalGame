@@ -1,4 +1,6 @@
-
+var SoundtrackPlay = true;
+var Soundtrack;
+var SoundtrackSong1 = 1 //Math.ceil(Math.random() * 5);
 var score = 0;
 var platforms;
 var mana = 50;
@@ -11,7 +13,11 @@ class Stage1 extends Phaser.Scene {
             frameWidth: 84, frameHeight: 84
         }) 
         this.load.image ('background', 'assets/Icons/background.png'), 
-        this.load.audio('test',['assets/Audio/song1.wav','assets/audio/song2.wav','assets/audio/song3.wav','assets/audio/song4']),
+        this.load.audio('song1','assets/Audio/song1.wav'),
+        this.load.audio('song2','assets/Audio/song2.wav'),
+        this.load.audio('song3', 'assets/Audio/song3.wav'),
+        this.load.audio('song4', 'assets/Audio/song4.wav')
+        this.load.audio('song5', 'assets/Audio/song5.wav')
         this.load.audio('tutoroll',['assets/Audio/lol.mp3']),
         this.load.image('projectile', 'assets/Icons/projectile.png'),
         this.load.image('projectile2', 'assets/icons/projectile2.png'),
@@ -29,6 +35,22 @@ class Stage1 extends Phaser.Scene {
         let bg = this.add.image(0,0,'sky').setOrigin(0,0);
         Align.scaleToGameW(bg, 2);
         //
+        //
+        
+        let song1 = this.sound.add("song1");
+        let song2 = this.sound.add("song2");
+        let song3 = this.sound.add("song3");
+        let song4 = this.sound.add("song4");
+        let song5 = this.sound.add("song5");
+        var songcomplete = {
+            volume: 0.5 ,
+            rate : 1,
+            loop : true,
+        }
+        if (SoundtrackSong1 == 1) {
+            song5.play(songcomplete);
+            
+        }
         //
         //
         platforms = this.physics.add.staticGroup();
@@ -63,7 +85,6 @@ class Stage1 extends Phaser.Scene {
         //
         //
         this.player = this.physics.add.sprite(0,600, 'PLAYER');
-        Align.scaleToGameW(this.player,.03);
         this.image2 = this.add.image('demon');
         this.demonsummoning = this.sound.add('summonsound');
         this.fireballeffect = this.sound.add("fireball");
@@ -85,9 +106,21 @@ class Stage1 extends Phaser.Scene {
         //
         //
         //
+        //
+this.blockGrid = new AlignGrid({
+            scene: this,
+            rows: 11,
+            cols: 11,
+            height: bg.displayHeight,
+            width: bg.displayWidth
+            
+})
+        //
         //window.scene = this;
-        this.cameras.main.setBounds(0,0,bg.displayWidth,bg.displayHeight);
-        this.cameras.main.startFollow(this.player)
+        this.cameras.main.setBounds(0, 0,1900,960);
+        this.physics.world.setBounds(0,0,1900,960)
+        this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
+        this.cameras.main.setZoom(3);
         //
         //
         //
@@ -110,6 +143,7 @@ class Stage1 extends Phaser.Scene {
     star.disableBody(true, true);
     score += 10;
     if (score == 120) {
+        song5.stop();
         this.scene.start("Stage2")
     }
 };
@@ -121,13 +155,6 @@ class Stage1 extends Phaser.Scene {
                     player.setGravityY(10000);
             }
         }
-        this.blockGrid = new AlignGrid({
-            scene: this,
-            rows: 11,
-            cols: 11,
-            height: bg.displayHeight,
-            width: bg.displayWidth
-        })
         //this.blockGrid.showNumbers();
         //
         //
